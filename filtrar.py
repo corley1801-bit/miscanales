@@ -139,7 +139,7 @@ MIS_CANALES_FAVORITOS = [
 "Az Corazón",
 "AZTECA 7",
 "CANAL 5",
-"ADN 40",
+"ADN 40"
 ]
 
 def filtrar_lista():
