@@ -1,0 +1,33 @@
+name: Actualizar Canales
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Corre automáticamente cada 2 horas
+  workflow_dispatch: # Te permite ejecutarlo manualmente cuando quieras
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clonar repositorio
+      uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Instalar librerías
+      run: pip install requests
+
+    - name: Ejecutar script extractor
+      run: python filtrar.py
+
+    - name: Guardar y subir cambios
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git add mi_lista_personalizada.m3u
+        git commit -m "Tokens actualizados automáticamente" || exit 0
+        git push
+
