@@ -2,11 +2,7 @@ import requests
 
 # 1. Agrega aquí tus 3 URLs de origen (puedes poner las que quieras)
 URLS_ORIGEN = [
-    "https://tecnotv.club/xm4p/android.m3u",
-    "https://tecnotv.club/xm4p/android1.m3u", # Reemplaza esta por tu segunda URL si la tienes
-    "https://tecnotv.club/xm4p/android2.m3u",  # Reemplaza esta por tu tercera URL si la tienes
-    "https://tecnotv.club/xm4p/lista.m3u",
-    "https://tecnotv.club/xm4p/lista1.m3u",
+    "https://tecnotv.club/xm4p/android2.m3u",
     "https://tecnotv.club/xm4p/android3.m3u",
 ]
 
