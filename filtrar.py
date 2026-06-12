@@ -136,7 +136,9 @@ MIS_CANALES_FAVORITOS = [
 "GOLDEN PREMIER",
 "IMAGEN",
 "Az Cinema", 
-"Az Corazón", 
+"Az Corazón",
+"AZTECA 7",
+"CANAL 5",
 "ADN 40",
 ]
 
