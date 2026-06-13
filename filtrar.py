@@ -2,10 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-# Página que publica las actualizaciones diarias de TecnoTV
-PAGINA_MADRE = "https://spinoff.link"
+PAGINA_MADRE = "https://spinoff.link/listas-iptv-actualizadas-2025/"
 
-# Escribe aquí tus canales favoritos usando abreviaturas cortas
+# REGLA: Usa palabras clave en minúsculas y sin agregados (el script buscará coincidencias de forma flexible)
 MIS_CANALES_FAVORITOS = [
 "De Pelicula",
 "AE Mundo",
@@ -140,68 +139,75 @@ MIS_CANALES_FAVORITOS = [
 ]
 
 def obtener_carpeta_actual():
-    """Escanea la página web para ver si el token cambió hoy"""
-    cabeceras = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+    # Cabeceras completas imitando a Google Chrome desde una computadora
+    cabeceras = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        "Accept-Language": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+    }
     try:
-        respuesta = requests.get(PAGINA_MADRE, headers=cabeceras, timeout=10)
+        respuesta = requests.get(PAGINA_MADRE, headers=cabeceras, timeout=12)
         if respuesta.status_code == 200:
             soup = BeautifulSoup(respuesta.text, 'html.parser')
             for enlace in soup.find_all('a', href=True):
                 href = enlace['href']
-                if "tecnotv.club" in href and ".m3u" in href:
+                if "tecnotv.club" in href:
                     match = re.search(r"tecnotv\.club/([^/]+)/", href)
                     if match:
-                        return match.group(1)
-    except Exception:
-        pass
-    return "wbh2" # Si falla el escaneo, usa wbh2 por defecto
+                        token = match.group(1)
+                        print(f"[EXITO] Token detectado en la web: {token}")
+                        return token
+    except Exception as e:
+        print(f"[ALERTA] Error al rastrear la web: {e}")
+    print("[AVISO] Usando token de respaldo por defecto")
+    return "wbh2" # Token de respaldo si la web está caída
 
 def filtrar_lista():
     token_actual = obtener_carpeta_actual()
-    print(f"Token dinámico del día: {token_actual}")
     
-    # TUS 3 FUENTES EXCLUSIVAS SELECCIONADAS
-    # El script cambiará 'wbh2' automáticamente por el nuevo token cuando sea necesario
+    # Tus 3 listas preferidas exclusivas
     ARCHIVOS_M3U = [
         "lista1.m3u",
         "android2.m3u",
         "android3.m3u"
     ]
     
-    nueva_lista = ["#EXTM3U"] 
-    enlaces_agregados = set() 
-    cabeceras = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"}
+    nueva_lista = ["#EXTM3U"] # Cabecera obligatoria
+    enlaces_agregados = set()
+    cabeceras_stream = {"User-Agent": "Mozilla/5.0"}
     
     for archivo in ARCHIVOS_M3U:
         url_m3u = f"https://tecnotv.club/{token_actual}/{archivo}"
         try:
-            respuesta = requests.get(url_m3u, headers=cabeceras, timeout=8)
+            respuesta = requests.get(url_m3u, headers=cabeceras_stream, timeout=10)
             if respuesta.status_code != 200:
-                print(f"No se pudo leer el archivo: {archivo}")
                 continue
                 
             lineas = respuesta.text.split("\n")
-            print(f"Buscando canales en: {archivo}...")
+            print(f"Leyendo archivo: {archivo}")
             
             for i in range(len(lineas)):
                 if lineas[i].startswith("#EXTINF"):
-                    if any(canal.lower() in lineas[i].lower() for canal in MIS_CANALES_FAVORITOS):
+                    # Filtramos de forma flexible: si la palabra clave está en el nombre del canal, entra
+                    if any(canal in lineas[i].lower() for canal in MIS_CANALES_FAVORITOS):
                         if i + 1 < len(lineas):
                             enlace_original = lineas[i + 1].strip()
                             
-                            # Corrección de token en tiempo real
+                            # Forzamos la actualización de la carpeta interna del enlace con el nuevo token
                             enlace_corregido = re.sub(r"tecnotv\.club/[^/]+/", f"tecnotv.club/{token_actual}/", enlace_original)
                             
                             if enlace_corregido not in enlaces_agregados:
                                 nueva_lista.append(lineas[i].strip())
                                 nueva_lista.append(enlace_corregido)
                                 enlaces_agregados.add(enlace_corregido)
-        except Exception as e:
-            print(f"Error al leer {archivo}: {e}")
+        except Exception:
+            pass
 
+    # Guardamos los resultados
     with open("mi_lista_personalizada.m3u", "w", encoding="utf-8") as f:
         f.write("\n".join(nueva_lista))
-    print(f"¡Éxito total! Lista generada con {len(enlaces_agregados)} canales de tus 3 fuentes.")
+    print(f"[OK] Lista generada con {len(enlaces_agregados)} canales.")
 
 if __name__ == "__main__":
     filtrar_lista()
+
