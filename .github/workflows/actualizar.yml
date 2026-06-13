@@ -18,7 +18,7 @@ jobs:
         python-version: '3.x'
 
     - name: Instalar librerías
-      run: pip install requests
+      run: pip install requests beautifulsoup4 
 
     - name: Ejecutar script extractor
       run: python filtrar.py
