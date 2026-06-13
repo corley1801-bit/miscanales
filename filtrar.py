@@ -2,10 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-# Página que publica las actualizaciones diarias
+# Página que publica las actualizaciones diarias de TecnoTV
 PAGINA_MADRE = "https://spinoff.link"
 
-# Agrega aquí todos los canales que quieras (abreviaturas cortas)
+# Escribe aquí tus canales favoritos usando abreviaturas cortas
 MIS_CANALES_FAVORITOS = [
 "De Pelicula",
 "AE Mundo",
@@ -140,9 +140,10 @@ MIS_CANALES_FAVORITOS = [
 ]
 
 def obtener_carpeta_actual():
+    """Escanea la página web para ver si el token cambió hoy"""
     cabeceras = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
     try:
-        respuesta = requests.get(PAGINA_MADRE, headers=cabeceras, timeout=15)
+        respuesta = requests.get(PAGINA_MADRE, headers=cabeceras, timeout=10)
         if respuesta.status_code == 200:
             soup = BeautifulSoup(respuesta.text, 'html.parser')
             for enlace in soup.find_all('a', href=True):
@@ -151,33 +152,36 @@ def obtener_carpeta_actual():
                     match = re.search(r"tecnotv\.club/([^/]+)/", href)
                     if match:
                         return match.group(1)
-    except Exception as e:
-        print(f"Error al buscar carpeta: {e}")
-    return "wbh2"
+    except Exception:
+        pass
+    return "wbh2" # Si falla el escaneo, usa wbh2 por defecto
 
 def filtrar_lista():
     token_actual = obtener_carpeta_actual()
-    print(f"Procesando canales con el token: {token_actual}")
+    print(f"Token dinámico del día: {token_actual}")
     
-    # AQUÍ ESTÁN TODAS LAS FUENTES QUE MENCIONASTE REUNIDAS EN UN SOLO LUGAR
+    # TUS 3 FUENTES EXCLUSIVAS SELECCIONADAS
+    # El script cambiará 'wbh2' automáticamente por el nuevo token cuando sea necesario
     ARCHIVOS_M3U = [
-        "android.m3u", "android2.m3u", "android3.m3u", "premium.m3u",
-        "lista.m3u", "lista1.m3u", "lista2.m3u", "lista3.m3u", "lista4.m3u"
+        "lista1.m3u",
+        "android2.m3u",
+        "android3.m3u"
     ]
     
     nueva_lista = ["#EXTM3U"] 
     enlaces_agregados = set() 
-    cabeceras = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    cabeceras = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)"}
     
     for archivo in ARCHIVOS_M3U:
         url_m3u = f"https://tecnotv.club/{token_actual}/{archivo}"
         try:
-            respuesta = requests.get(url_m3u, headers=cabeceras, timeout=12)
+            respuesta = requests.get(url_m3u, headers=cabeceras, timeout=8)
             if respuesta.status_code != 200:
+                print(f"No se pudo leer el archivo: {archivo}")
                 continue
                 
             lineas = respuesta.text.split("\n")
-            print(f"Buscando en: {archivo}...")
+            print(f"Buscando canales en: {archivo}...")
             
             for i in range(len(lineas)):
                 if lineas[i].startswith("#EXTINF"):
@@ -185,20 +189,19 @@ def filtrar_lista():
                         if i + 1 < len(lineas):
                             enlace_original = lineas[i + 1].strip()
                             
-                            # Reemplaza el token viejo detectado internamente por el del día
+                            # Corrección de token en tiempo real
                             enlace_corregido = re.sub(r"tecnotv\.club/[^/]+/", f"tecnotv.club/{token_actual}/", enlace_original)
                             
                             if enlace_corregido not in enlaces_agregados:
                                 nueva_lista.append(lineas[i].strip())
                                 nueva_lista.append(enlace_corregido)
                                 enlaces_agregados.add(enlace_corregido)
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Error al leer {archivo}: {e}")
 
     with open("mi_lista_personalizada.m3u", "w", encoding="utf-8") as f:
         f.write("\n".join(nueva_lista))
-    print(f"¡Lista completa generada con {len(enlaces_agregados)} canales únicos!")
+    print(f"¡Éxito total! Lista generada con {len(enlaces_agregados)} canales de tus 3 fuentes.")
 
 if __name__ == "__main__":
     filtrar_lista()
-
