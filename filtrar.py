@@ -1,14 +1,13 @@
 import requests
+from bs4 import BeautifulSoup
+import re
 
-# 1. Agrega aquí tus 3 URLs de origen (puedes poner las que quieras)
-URLS_ORIGEN = [
-    "https://tecnotv.club/xm4p/android2.m3u",
-    "https://tecnotv.club/xm4p/android3.m3u",
-]
+# La página web principal que contiene los botones dinámicos
+PAGINA_MADRE = "https://spinoff.link/listas-iptv-actualizadas-2025/"
 
-# 2. Escribe aquí tus canales favoritos (Modifícalos a tu gusto, respetando las comillas y comas)
+# Tus canales favoritos con nombres exactos (Modifícalos con comillas y comas)
 MIS_CANALES_FAVORITOS = [
-    "De Pelicula",
+"De Pelicula",
 "AE Mundo",
 "AXN",
 "Animal Planet",
@@ -136,46 +135,79 @@ MIS_CANALES_FAVORITOS = [
 "GOLDEN PREMIER",
 "IMAGEN",
 "Az Cinema", 
-"Az Corazón",
-"AZTECA 7",
-"CANAL 5",
+"Az Corazón", 
 "ADN 40"
 ]
 
-def filtrar_lista():
-    nueva_lista = ["#EXTM3U"] # Cabecera obligatoria
-    canales_agregados = set() # Evita canales repetidos si están en más de una lista
+def extraer_urls_dinamicas():
+    urls_encontradas = []
+    cabeceras = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
     
-    # Revisar cada una de las URLs
-    for url in URLS_ORIGEN:
+    try:
+        # Entrar a la página web de SpinOff para leer sus botones
+        respuesta = requests.get(PAGINA_MADRE, headers=cabeceras, timeout=15)
+        if respuesta.status_code != 200:
+            print("Error: No se pudo acceder a la página web principal.")
+            return urls_encontradas
+            
+        soup = BeautifulSoup(respuesta.text, 'html.parser')
+        
+        # Buscar todos los enlaces de la página que apunten a un archivo .m3u
+        for enlace in soup.find_all('a', href=True):
+            href = enlace['href']
+            if ".m3u" in href and href not in urls_encontradas:
+                urls_encontradas.append(href)
+                
+        print(f"¡Éxito! Se detectaron {len(urls_encontradas)} URLs de listas M3U activas en la web.")
+    except Exception as e:
+        print(f"Fallo al rastrear la web: {e}")
+        
+    return urls_encontradas
+
+def filtrar_lista():
+    # 1. Obtener de forma automática las URLs vigentes de la página
+    urls_origen = extraer_urls_dinamicas()
+    
+    if not urls_origen:
+        print("No se encontraron enlaces M3U para procesar.")
+        return
+
+    nueva_lista = ["#EXTM3U"] 
+    enlaces_agregados = set() 
+    nombres_ya_guardados = set() 
+    cabeceras = {"User-Agent": "Mozilla/5.0"}
+    
+    # 2. Recorrer las listas descargadas automáticamente
+    for url in urls_origen:
         try:
-            respuesta = requests.get(url, timeout=10)
+            respuesta = requests.get(url, headers=cabeceras, timeout=10)
             if respuesta.status_code != 200:
-                print(f"Error al descargar la lista: {url}")
                 continue
                 
             lineas = respuesta.text.split("\n")
             
-            # Recorrer el archivo buscando tus canales
             for i in range(len(lineas)):
                 if lineas[i].startswith("#EXTINF"):
-                    # Comprobar si coincide con tus favoritos
-                    if any(canal.lower() in lineas[i].lower() for canal in MIS_CANALES_FAVORITOS):
-                        # Extraer el enlace del canal (la línea siguiente)
-                        if i + 1 < len(lineas):
-                            enlace = lineas[i + 1].strip()
-                            # Si el enlace no lo hemos guardado antes, lo añade
-                            if enlace not in canales_agregados:
-                                nueva_lista.append(lineas[i].strip())
-                                nueva_lista.append(enlace)
-                                canales_agregados.add(enlace)
+                    match = re.search(r",([^,]+)$", lineas[i])
+                    if match:
+                        nombre_en_lista = match.group(1).strip().lower()
+                        
+                        if any(canal.strip().lower() == nombre_en_lista for canal in MIS_CANALES_FAVORITOS):
+                            if i + 1 < len(lineas):
+                                enlace = lineas[i + 1].strip()
+                                
+                                if enlace not in enlaces_agregados and nombre_en_lista not in nombres_ya_guardados:
+                                    nueva_lista.append(lineas[i].strip())
+                                    nueva_lista.append(enlace)
+                                    enlaces_agregados.add(enlace)
+                                    nombres_ya_guardados.add(nombre_en_lista)
         except Exception as e:
-            print(f"Fallo en la conexión con {url}: {e}")
+            pass
 
-    # Guardar el archivo final unificado
+    # Sobrescribir tu archivo de lista personalizada en GitHub
     with open("mi_lista_personalizada.m3u", "w", encoding="utf-8") as f:
         f.write("\n".join(nueva_lista))
-    print(f"¡Lista actualizada con {len(canales_agregados)} canales con tokens nuevos!")
+    print(f"¡Proceso terminado! Guardados {len(nombres_ya_guardados)} canales únicos sin repetidos.")
 
 if __name__ == "__main__":
     filtrar_lista()
