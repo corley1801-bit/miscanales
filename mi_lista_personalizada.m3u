@@ -1,1 +1,117 @@
 #EXTM3U
+#EXTINF:-1 tvg-id="De Pelicula" tvg-name="De Pelicula" group-title="Mis Canales", De Pelicula
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a001&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Cinecanal" tvg-name="Cinecanal" group-title="Mis Canales", Cinecanal
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a002&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Cinemax" tvg-name="Cinemax" group-title="Mis Canales", Cinemax
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a003&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO" tvg-name="HBO" group-title="Mis Canales", HBO
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a004&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO 2" tvg-name="HBO 2" group-title="Mis Canales", HBO 2
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a005&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO Family" tvg-name="HBO Family" group-title="Mis Canales", HBO Family
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a006&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO Plus" tvg-name="HBO Plus" group-title="Mis Canales", HBO Plus
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a007&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO XTREME SD" tvg-name="HBO XTREME SD" group-title="Mis Canales", HBO XTREME SD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a008&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO POP HD" tvg-name="HBO POP HD" group-title="Mis Canales", HBO POP HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a009&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO Signature" tvg-name="HBO Signature" group-title="Mis Canales", HBO Signature
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a010&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="HBO+" tvg-name="HBO+" group-title="Mis Canales", HBO+
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a011&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN" tvg-name="ESPN" group-title="Mis Canales", ESPN
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a012&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN 2 HD" tvg-name="ESPN 2 HD" group-title="Mis Canales", ESPN 2 HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a013&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN 3" tvg-name="ESPN 3" group-title="Mis Canales", ESPN 3
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a014&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN 4 HD" tvg-name="ESPN 4 HD" group-title="Mis Canales", ESPN 4 HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a015&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN 5 HD" tvg-name="ESPN 5 HD" group-title="Mis Canales", ESPN 5 HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a016&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN 6 HD" tvg-name="ESPN 6 HD" group-title="Mis Canales", ESPN 6 HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a017&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN 7HD" tvg-name="ESPN 7HD" group-title="Mis Canales", ESPN 7HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a018&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN HD" tvg-name="ESPN HD" group-title="Mis Canales", ESPN HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a019&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="ESPN PREMIUM HD" tvg-name="ESPN PREMIUM HD" group-title="Mis Canales", ESPN PREMIUM HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a020&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Warner" tvg-name="Warner" group-title="Mis Canales", Warner
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a021&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="WARNER HD" tvg-name="WARNER HD" group-title="Mis Canales", WARNER HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a022&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Discovery Channel" tvg-name="Discovery Channel" group-title="Mis Canales", Discovery Channel
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a023&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Discovery Channel HD" tvg-name="Discovery Channel HD" group-title="Mis Canales", Discovery Channel HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a024&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Discovery Turbo" tvg-name="Discovery Turbo" group-title="Mis Canales", Discovery Turbo
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a025&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Discovery Kids" tvg-name="Discovery Kids" group-title="Mis Canales", Discovery Kids
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a026&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="DISCOVERY THEATHER HD" tvg-name="DISCOVERY THEATHER HD" group-title="Mis Canales", DISCOVERY THEATHER HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a027&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Discovery ID HD" tvg-name="Discovery ID HD" group-title="Mis Canales", Discovery ID HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a028&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Discovery World HD" tvg-name="Discovery World HD" group-title="Mis Canales", Discovery World HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a029&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Disney Channel" tvg-name="Disney Channel" group-title="Mis Canales", Disney Channel
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a030&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Disney Jr" tvg-name="Disney Jr" group-title="Mis Canales", Disney Jr
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a031&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Disney JR" tvg-name="Disney JR" group-title="Mis Canales", Disney JR
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a032&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="AXN" tvg-name="AXN" group-title="Mis Canales", AXN
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a033&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TV PREMIUM AXN" tvg-name="TV PREMIUM AXN" group-title="Mis Canales", TV PREMIUM AXN
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a034&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="FX" tvg-name="FX" group-title="Mis Canales", FX
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a035&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="SPACE" tvg-name="SPACE" group-title="Mis Canales", SPACE
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a036&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="SPACE HD" tvg-name="SPACE HD" group-title="Mis Canales", SPACE HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a037&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TNT" tvg-name="TNT" group-title="Mis Canales", TNT
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a038&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TNT 2" tvg-name="TNT 2" group-title="Mis Canales", TNT 2
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a039&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TNT Series HD" tvg-name="TNT Series HD" group-title="Mis Canales", TNT Series HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a040&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TNT Novelas" tvg-name="TNT Novelas" group-title="Mis Canales", TNT Novelas
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a041&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TNT Sports Premium HD" tvg-name="TNT Sports Premium HD" group-title="Mis Canales", TNT Sports Premium HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a042&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Universal" tvg-name="Universal" group-title="Mis Canales", Universal
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a043&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TV PREMIUM Universal" tvg-name="TV PREMIUM Universal" group-title="Mis Canales", TV PREMIUM Universal
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a044&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="UNIVERSAL CINEMA HD" tvg-name="UNIVERSAL CINEMA HD" group-title="Mis Canales", UNIVERSAL CINEMA HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a045&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="UNIVERSAL COMEDY HD" tvg-name="UNIVERSAL COMEDY HD" group-title="Mis Canales", UNIVERSAL COMEDY HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a046&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="UNIVERSAL CRIME HD" tvg-name="UNIVERSAL CRIME HD" group-title="Mis Canales", UNIVERSAL CRIME HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a047&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="UNIVERSAL PREMIERE" tvg-name="UNIVERSAL PREMIERE" group-title="Mis Canales", UNIVERSAL PREMIERE
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a048&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="UNIVERSAL PREMIERE O HD" tvg-name="UNIVERSAL PREMIERE O HD" group-title="Mis Canales", UNIVERSAL PREMIERE O HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a049&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="UNIVERSAL REALITY HD" tvg-name="UNIVERSAL REALITY HD" group-title="Mis Canales", UNIVERSAL REALITY HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a050&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="STAR CHANNEL" tvg-name="STAR CHANNEL" group-title="Mis Canales", STAR CHANNEL
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a051&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="STAR CHANNEL HD" tvg-name="STAR CHANNEL HD" group-title="Mis Canales", STAR CHANNEL HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a052&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="STAR LIFE" tvg-name="STAR LIFE" group-title="Mis Canales", STAR LIFE
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a053&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="TUDN" tvg-name="TUDN" group-title="Mis Canales", TUDN
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a054&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="FOX SPORT 2" tvg-name="FOX SPORT 2" group-title="Mis Canales", FOX SPORT 2
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a055&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="SKY SPORTS" tvg-name="SKY SPORTS" group-title="Mis Canales", SKY SPORTS
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a056&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Claro Deportes" tvg-name="Claro Deportes" group-title="Mis Canales", Claro Deportes
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a057&token=tecnotokenplustv230516F
+#EXTINF:-1 tvg-id="Tigo Sports HD" tvg-name="Tigo Sports HD" group-title="Mis Canales", Tigo Sports HD
+https://tecnotv.club/wbh2/phpcode/android3.php?c=a058&token=tecnotokenplustv230516F
