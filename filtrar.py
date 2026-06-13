@@ -2,11 +2,11 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-PAGINA_MADRE = "https://spinoff.link/listas-iptv-actualizadas-2025/"
+PAGINA_MADRE = "https://spinoff.link"
 
-# REGLA: Usa palabras clave en minúsculas y sin agregados (el script buscará coincidencias de forma flexible)
+# REGLA: Escribe tus canales aquí como tú quieras (el script los buscará ignorando mayúsculas y minúsculas)
 MIS_CANALES_FAVORITOS = [
-"De Pelicula",
+   "De Pelicula",
 "AE Mundo",
 "AXN",
 "Animal Planet",
@@ -135,11 +135,10 @@ MIS_CANALES_FAVORITOS = [
 "IMAGEN",
 "Az Cinema", 
 "Az Corazón", 
-"ADN 40"
+"ADN 40" 
 ]
 
 def obtener_carpeta_actual():
-    # Cabeceras completas imitando a Google Chrome desde una computadora
     cabeceras = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -155,59 +154,59 @@ def obtener_carpeta_actual():
                     match = re.search(r"tecnotv\.club/([^/]+)/", href)
                     if match:
                         token = match.group(1)
-                        print(f"[EXITO] Token detectado en la web: {token}")
+                        print(f"[EXITO] Token detectado: {token}")
                         return token
-    except Exception as e:
-        print(f"[ALERTA] Error al rastrear la web: {e}")
-    print("[AVISO] Usando token de respaldo por defecto")
-    return "wbh2" # Token de respaldo si la web está caída
+    except Exception:
+        pass
+    return "wbh2"
 
 def filtrar_lista():
     token_actual = obtener_carpeta_actual()
     
-    # Tus 3 listas preferidas exclusivas
     ARCHIVOS_M3U = [
         "lista1.m3u",
         "android2.m3u",
         "android3.m3u"
     ]
     
-    nueva_lista = ["#EXTM3U"] # Cabecera obligatoria
+    nueva_lista = ["#EXTM3U"] 
     enlaces_agregados = set()
     cabeceras_stream = {"User-Agent": "Mozilla/5.0"}
     
     for archivo in ARCHIVOS_M3U:
-        url_m3u = f"https://tecnotv.club/{token_actual}/{archivo}"
+        url_m3u = f"https://tecnotv.club{token_actual}/{archivo}"
         try:
             respuesta = requests.get(url_m3u, headers=cabeceras_stream, timeout=10)
             if respuesta.status_code != 200:
                 continue
                 
             lineas = respuesta.text.split("\n")
-            print(f"Leyendo archivo: {archivo}")
+            print(f"Buscando en: {archivo}")
             
             for i in range(len(lineas)):
                 if lineas[i].startswith("#EXTINF"):
-                    # Filtramos de forma flexible: si la palabra clave está en el nombre del canal, entra
-                    if any(canal in lineas[i].lower() for canal in MIS_CANALES_FAVORITOS):
+                    # TRUCO INFALIBLE: Convertimos a minúsculas toda la línea de forma segura antes de buscar
+                    linea_en_minusculas = lineas[i].lower()
+                    
+                    # Verificamos si tu favorito está dentro del texto convertido
+                    if any(canal.lower() in linea_en_minusculas for canal in MIS_CANALES_FAVORITOS):
                         if i + 1 < len(lineas):
                             enlace_original = lineas[i + 1].strip()
                             
-                            # Forzamos la actualización de la carpeta interna del enlace con el nuevo token
-                            enlace_corregido = re.sub(r"tecnotv\.club/[^/]+/", f"tecnotv.club/{token_actual}/", enlace_original)
-                            
-                            if enlace_corregido not in enlaces_agregados:
-                                nueva_lista.append(lineas[i].strip())
-                                nueva_lista.append(enlace_corregido)
-                                enlaces_agregados.add(enlace_corregido)
-        except Exception:
-            pass
+                            # Validamos que sea un enlace web real y no una línea vacía
+                            if enlace_original.startswith("http"):
+                                enlace_corregido = re.sub(r"tecnotv\.club/[^/]+/", f"tecnotv.club/{token_actual}/", enlace_original)
+                                
+                                if enlace_corregido not in enlaces_agregados:
+                                    nueva_lista.append(lineas[i].strip()) # Guarda el nombre original con sus mayúsculas
+                                    nueva_lista.append(enlace_corregido)
+                                    enlaces_agregados.add(enlace_corregido)
+        except Exception as e:
+            print(f"Error en archivo {archivo}: {e}")
 
-    # Guardamos los resultados
     with open("mi_lista_personalizada.m3u", "w", encoding="utf-8") as f:
         f.write("\n".join(nueva_lista))
     print(f"[OK] Lista generada con {len(enlaces_agregados)} canales.")
 
 if __name__ == "__main__":
     filtrar_lista()
-
