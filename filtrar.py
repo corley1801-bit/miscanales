@@ -2,34 +2,26 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-PAGINA_MADRE = "https://spinoff.link"
+PAGINA_MADRE = "https://spinoff.link/listas-iptv-actualizadas-2025/"
 
-# Tus palabras clave favoritas en minúsculas
+# REGLA: Deja solo las palabras principales en MINÚSCULAS. 
+# El script jalará cualquier canal que contenga esta palabra en su línea técnica.
 MIS_CANALES_FAVORITOS = [
-    "de pelicula", "ae mundo", "axn", "animal planet", "cnn", "cnn español", 
-    "canal claro", "cinecanal", "cinemax", "cine claro", "claro deportes", 
-    "discovery channel", "discovery turbo", "disney channel", "disney jr", 
-    "espn", "espn 2 hd", "espn 3", "espn 4 hd", "espn 5 hd", "espn 6 hd", 
-    "espn 7hd", "espn hd", "espn premium hd", "enlace", "esne tv", "fox news chanel", 
-    "fx", "hbo", "hbo 2", "hbo family", "hbo plus", "hbo xtreme sd", "history channel", 
-    "homeandhealth", "la kalle", "de por vida", "lifetime", "mtv", "national geographic", 
-    "hbo+", "nick jr", "nickelodeon", "star channel", "sin límites", "sony", "espacio", 
-    "space", "studio universal", "tcm", "tnt", "tnt sports premium hd", "telemundo", 
-    "tigo sports hd", "usa", "universal", "warner", "zz alquiler 8", "tv premium azteca 7", 
-    "tv premium canal 5", "cartoon network", "distrito comedia", "fox sport 2", 
-    "tv premium las estrellas", "tv premium las estrellas legal", "sky sports", 
-    "telemundo miami", "tl novelas", "tudn", "boomerang", "discovery kids", "tooncast", 
-    "adult swim", "canal de conciertos", "exa tv", "golf channel hd", "pasiones hd", 
-    "univision hd", "az click hd", "azcorazon", "az corazón", "azmundo", "discovery theather hd", 
-    "discovery channel hd", "discovery id hd", "discovery world hd", "el gourmet", 
-    "historia 2", "sony hd", "sony movies hd", "star channel hd", "star life", "sun channel", 
-    "tnt 2", "tnt novelas", "tnt series hd", "universal cinema hd", "universal comedy hd", 
-    "universal crime hd", "universal premiere", "universal premiere o hd", "universal reality hd", 
-    "amc hd", "tv premium axn", "cine latino", "tv premium cinemax", "dhe hd", 
-    "e! entertainment hd", "film & arts hd", "golden", "home & health hd", "multipremier", 
-    "nat geo hd", "space hd", "tlc", "tv premium universal", "warner hd", "azteca uno", 
-    "edge", "hbo pop hd", "hbo signature", "playboy hd", "venus", "golden premier", 
-    "imagen", "az cinema", "az corazón", "adn 40"
+    "de pelicula", "ae mundo", "axn", "animal planet", "cnn", "canal claro", 
+    "cinecanal", "cinemax", "cine claro", "claro deportes", "discovery channel", 
+    "discovery turbo", "disney channel", "disney jr", "espn", "enlace", "esne tv", 
+    "fox news", "fx", "hbo", "history channel", "homeandhealth", "home & health", 
+    "la kalle", "de por vida", "lifetime", "mtv", "national geographic", "nat geo", 
+    "nick jr", "nickelodeon", "star channel", "sin límites", "sony", "espacio", 
+    "space", "studio universal", "tcm", "tnt", "telemundo", "tigo sports", "usa", 
+    "universal", "warner", "zz alquiler", "azteca 7", "canal 5", "cartoon network", 
+    "distrito comedia", "las estrellas", "sky sports", "tl novelas", "tudn", 
+    "boomerang", "discovery kids", "tooncast", "adult swim", "conciertos", "exa tv", 
+    "golf channel", "pasiones", "univision", "az click", "azcorazon", "az corazón", 
+    "azmundo", "discovery theather", "discovery id", "discovery world", "el gourmet", 
+    "historia 2", "star life", "sun channel", "amc", "cine latino", "dhe", 
+    "e! entertainment", "film & arts", "golden", "multipremier", "tlc", "edge", 
+    "playboy", "venus", "imagen", "az cinema", "adn 40"
 ]
 
 def obtener_carpeta_actual():
@@ -56,7 +48,7 @@ def obtener_carpeta_actual():
 def filtrar_lista():
     token_actual = obtener_carpeta_actual()
     
-    # Las 3 fuentes que elegiste
+    # Tus 3 listas preferidas exclusivas
     ARCHIVOS_M3U = [
         "lista1.m3u",
         "android2.m3u",
@@ -65,10 +57,10 @@ def filtrar_lista():
     
     nueva_lista = ["#EXTM3U"] 
     enlaces_agregados = set()
-    cabeceras_stream = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    cabeceras_stream = {"User-Agent": "Mozilla/5.0"}
     
     for archivo in ARCHIVOS_M3U:
-        url_m3u = f"https://tecnotv.club{token_actual}/{archivo}"
+        url_m3u = f"https://tecnotv.club/{token_actual}/{archivo}"
         try:
             respuesta = requests.get(url_m3u, headers=cabeceras_stream, timeout=10)
             if respuesta.status_code != 200:
@@ -79,17 +71,19 @@ def filtrar_lista():
             
             for i in range(len(lineas)):
                 if lineas[i].startswith("#EXTINF"):
-                    linea_completa_minusculas = lineas[i].strip().lower()
+                    # Pasamos toda la línea técnica a minúsculas para romper problemas de formato
+                    linea_tecnica_minusculas = lineas[i].lower()
                     
-                    if any(favorito in linea_completa_minusculas for favorito in MIS_CANALES_FAVORITOS):
+                    # Verificamos de forma directa si tu palabra favorita está dentro de la línea
+                    if any(favorito in linea_tecnica_minusculas for favorito in MIS_CANALES_FAVORITOS):
                         if i + 1 < len(lineas):
                             enlace_original = lineas[i + 1].strip()
                             
                             if enlace_original.startswith("http"):
-                                # 1. Parcheamos el token/carpeta del día
+                                # Corregimos el token de la carpeta interna
                                 enlace_corregido = re.sub(r"tecnotv\.club/[^/]+/", f"tecnotv.club/{token_actual}/", enlace_original)
                                 
-                                # 2. TU TRUCO MÁXIMO: Inyectamos el formato m3u8 al final si el enlace no lo tiene ya
+                                # Aplicamos tu gran truco del formato m3u8 al final
                                 if not enlace_corregido.endswith("&f=.m3u8"):
                                     enlace_corregido = enlace_corregido + "&f=.m3u8"
                                 
@@ -102,7 +96,7 @@ def filtrar_lista():
 
     with open("mi_lista_personalizada.m3u", "w", encoding="utf-8") as f:
         f.write("\n".join(nueva_lista))
-    print(f"[OK] ¡Lista reparada con {len(enlaces_agregados)} canales con extensión .m3u8!")
+    print(f"[OK] ¡Lista generada exitosamente con {len(enlaces_agregados)} canales!")
 
 if __name__ == "__main__":
     filtrar_lista()
