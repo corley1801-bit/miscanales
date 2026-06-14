@@ -2,35 +2,60 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-PAGINA_MADRE = "https://spinoff.link/listas-iptv-actualizadas-2025/"
+# La página de SpinOff que usaremos SOLO para robar el token diario
+PAGINA_MADRE = "https://spinoff.link"
 
-# REGLA: Deja solo las palabras principales en MINÚSCULAS. 
-# El script jalará cualquier canal que contenga esta palabra en su línea técnica.
-MIS_CANALES_FAVORITOS = [
-    "de pelicula", "ae mundo", "axn", "animal planet", "cnn", "canal claro", 
-    "cinecanal", "cinemax", "cine claro", "claro deportes", "discovery channel", 
-    "discovery turbo", "disney channel", "disney jr", "espn", "enlace", "esne tv", 
-    "fox news", "fx", "hbo", "history channel", "homeandhealth", "home & health", 
-    "la kalle", "de por vida", "lifetime", "mtv", "national geographic", "nat geo", 
-    "nick jr", "nickelodeon", "star channel", "sin límites", "sony", "espacio", 
-    "space", "studio universal", "tcm", "tnt", "telemundo", "tigo sports", "usa", 
-    "universal", "warner", "zz alquiler", "azteca 7", "canal 5", "cartoon network", 
-    "distrito comedia", "las estrellas", "sky sports", "tl novelas", "tudn", 
-    "boomerang", "discovery kids", "tooncast", "adult swim", "conciertos", "exa tv", 
-    "golf channel", "pasiones", "univision", "az click", "azcorazon", "az corazón", 
-    "azmundo", "discovery theather", "discovery id", "discovery world", "el gourmet", 
-    "historia 2", "star life", "sun channel", "amc", "cine latino", "dhe", 
-    "e! entertainment", "film & arts", "golden", "multipremier", "tlc", "edge", 
-    "playboy", "venus", "imagen", "az cinema", "adn 40"
-]
+# DICCIONARIO DIRECTO: El script creará estos canales basándose en los códigos de TecnoTV
+# Si necesitas cambiar un nombre, hazlo aquí respetando las comillas
+CANALES_A_GENERAR = {
+    "De Pelicula": "a001",
+    "Cinecanal": "a002",
+    "Cinemax": "a003",
+    "HBO HD": "a004",
+    "HBO 2": "a005",
+    "HBO Family": "a006",
+    "HBO Plus": "a007",
+    "HBO XTREME SD": "a008",
+    "HBO POP HD": "a009",
+    "HBO Signature": "a010",
+    "HBO+": "a011",
+    "ESPN HD": "a012",
+    "ESPN 2 HD": "a013",
+    "ESPN 3": "a014",
+    "ESPN 4 HD": "a015",
+    "ESPN 5 HD": "a016",
+    "ESPN 6 HD": "a017",
+    "ESPN 7HD": "a018",
+    "ESPN PREMIUM HD": "a020",
+    "Warner Channel": "a021",
+    "WARNER HD": "a022",
+    "Discovery Channel": "a023",
+    "Discovery Turbo": "a025",
+    "Discovery Kids": "a026",
+    "Disney Channel": "a030",
+    "Disney Jr": "a031",
+    "AXN": "a033",
+    "FX": "a035",
+    "Space": "a036",
+    "TNT": "a038",
+    "TNT Series HD": "a040",
+    "TNT Novelas": "a041",
+    "TNT Sports Premium HD": "a042",
+    "Universal": "a043",
+    "STAR CHANNEL": "a051",
+    "TUDN": "a054",
+    "FOX SPORT 2": "a055",
+    "SKY SPORTS": "a056",
+    "Claro Deportes": "a057",
+    "Tigo Sports HD": "a058"
+}
 
 def obtener_carpeta_actual():
     cabeceras = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     }
     try:
-        respuesta = requests.get(PAGINA_MADRE, headers=cabeceras, timeout=12)
+        respuesta = requests.get(PAGINA_MADRE, headers=cabeceras, timeout=10)
         if respuesta.status_code == 200:
             soup = BeautifulSoup(respuesta.text, 'html.parser')
             for enlace in soup.find_all('a', href=True):
@@ -39,64 +64,34 @@ def obtener_carpeta_actual():
                     match = re.search(r"tecnotv\.club/([^/]+)/", href)
                     if match:
                         token = match.group(1)
-                        print(f"[EXITO] Token detectado: {token}")
+                        print(f"[ÉXITO] Token dinámico del día localizado: {token}")
                         return token
     except Exception:
         pass
-    return "wbh2"
+    return "wbh2" # Token de respaldo si la web se satura
 
 def filtrar_lista():
+    # 1. El robot entra a SpinOff a robar el token activo del día (ej: wbh2)
     token_actual = obtener_carpeta_actual()
     
-    # Tus 3 listas preferidas exclusivas
-    ARCHIVOS_M3U = [
-        "lista1.m3u",
-        "android2.m3u",
-        "android3.m3u"
-    ]
+    nueva_lista = ["#EXTM3U"]
     
-    nueva_lista = ["#EXTM3U"] 
-    enlaces_agregados = set()
-    cabeceras_stream = {"User-Agent": "Mozilla/5.0"}
-    
-    for archivo in ARCHIVOS_M3U:
-        url_m3u = f"https://tecnotv.club/{token_actual}/{archivo}"
-        try:
-            respuesta = requests.get(url_m3u, headers=cabeceras_stream, timeout=10)
-            if respuesta.status_code != 200:
-                continue
-                
-            lineas = respuesta.text.split("\n")
-            print(f"Buscando en: {archivo}")
-            
-            for i in range(len(lineas)):
-                if lineas[i].startswith("#EXTINF"):
-                    # Pasamos toda la línea técnica a minúsculas para romper problemas de formato
-                    linea_tecnica_minusculas = lineas[i].lower()
-                    
-                    # Verificamos de forma directa si tu palabra favorita está dentro de la línea
-                    if any(favorito in linea_tecnica_minusculas for favorito in MIS_CANALES_FAVORITOS):
-                        if i + 1 < len(lineas):
-                            enlace_original = lineas[i + 1].strip()
-                            
-                            if enlace_original.startswith("http"):
-                                # Corregimos el token de la carpeta interna
-                                enlace_corregido = re.sub(r"tecnotv\.club/[^/]+/", f"tecnotv.club/{token_actual}/", enlace_original)
-                                
-                                # Aplicamos tu gran truco del formato m3u8 al final
-                                if not enlace_corregido.endswith("&f=.m3u8"):
-                                    enlace_corregido = enlace_corregido + "&f=.m3u8"
-                                
-                                if enlace_corregido not in enlaces_agregados:
-                                    nueva_lista.append(lineas[i].strip())
-                                    nueva_lista.append(enlace_corregido)
-                                    enlaces_agregados.add(enlace_corregido)
-        except Exception as e:
-            print(f"Error en {archivo}: {e}")
-
+    # 2. Generación matemática directa sin descargar nada de TecnoTV (Evita bloqueos de red)
+    for nombre, codigo in CANALES_A_GENERAR.items():
+        # Creamos la etiqueta de la transmisión
+        tag = f'#EXTINF:-1 tvg-name="{nombre}" group-title="Mis Canales", {nombre}'
+        
+        # Construimos el enlace inyectándole el token dinámico y tu truco final de m3u8
+        enlace = f"https://tecnotv.club/{token_actual}/phpcode/android3.php?c={codigo}&token=tecnotokenplustv230516F&f=.m3u8"
+        
+        nueva_lista.append(tag)
+        nueva_lista.append(enlace)
+        
+    # Guardamos el archivo final M3U
     with open("mi_lista_personalizada.m3u", "w", encoding="utf-8") as f:
         f.write("\n".join(nueva_lista))
-    print(f"[OK] ¡Lista generada exitosamente con {len(enlaces_agregados)} canales!")
+        
+    print(f"[OK] ¡Lista indestructible generada con {len(CANALES_A_GENERAR)} canales!")
 
 if __name__ == "__main__":
     filtrar_lista()
